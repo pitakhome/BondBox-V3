@@ -41,24 +41,25 @@
 
         <!-- กล่องแสดงข้อมูลประวัติภายในเดือน (พร้อมปุ่มเลื่อน) -->
                 <!-- กล่องแสดงข้อมูลประวัติภายในเดือน (จัดระเบียบใหม่) -->
+                <!-- กล่องแสดงข้อมูลประวัติภายในเดือน (ปรับแก้ปุ่มไม่ให้ตกบรรทัด) -->
         <div id="historyContainer" class="mb-4 history-box">
-          <div class="row align-items-center mb-3">
-            <div class="col-7">
-              <div class="fw-bold text-primary mb-0" style="font-size: 0.9rem;">
-                <i class="fa-solid fa-clock-rotate-left me-1"></i> ประวัติภายในเดือนนี้:
+          <div class="row align-items-center mb-2">
+            <div class="col-6">
+              <div class="fw-bold text-primary mb-0" style="font-size: 0.85rem;">
+                <i class="fa-solid fa-clock-rotate-left me-1"></i> ประวัติเดือนนี้:
               </div>
-              <div id="his-time" class="fw-bold text-dark" style="font-size: 0.95rem;">-</div>
+              <div id="his-time" class="fw-bold text-dark" style="font-size: 0.9rem;">-</div>
             </div>
-            <div class="col-5 text-end">
+            <div class="col-6 text-end">
               <div class="d-flex justify-content-end align-items-center gap-1">
-                <button class="btn btn-sm btn-outline-primary py-0 px-2" style="font-size: 0.8rem;" onclick="navigateHistory(1)">«</button>
-                <span id="his-index" class="fw-bold text-dark px-1" style="font-size: 0.85rem; white-space: nowrap;">1 / 1</span>
-                <button class="btn btn-sm btn-outline-primary py-0 px-2" style="font-size: 0.8rem;" onclick="navigateHistory(-1)">»</button>
+                <button class="btn btn-sm btn-outline-primary py-1 px-2" onclick="navigateHistory(1)" title="ก่อนหน้า">◀</button>
+                <span id="his-index" class="fw-bold text-dark px-1" style="font-size: 0.9rem; white-space: nowrap;">1 / 1</span>
+                <button class="btn btn-sm btn-outline-primary py-1 px-2" onclick="navigateHistory(-1)" title="ถัดไป">▶</button>
               </div>
             </div>
           </div>
 
-          <!-- ตารางแสดงข้อมูลค่าการวัดแบบเป็นระเบียบ -->
+          <!-- ตารางแสดงข้อมูลค่าการวัด -->
           <div class="row g-2 pt-2 border-top border-primary-subtle">
             <div class="col-4">
               <div class="history-item-label">Type</div>
