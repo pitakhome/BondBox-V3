@@ -7,14 +7,19 @@
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
   <script src="https://unpkg.com/html5-qrcode"></script>
-  <style>
+    <style>
     body { background-color: #f4f7f6; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
     .card { border: none; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); }
     .card-header { border-radius: 12px 12px 0 0 !important; font-weight: 600; }
     .form-control, .form-select { border-radius: 8px; padding: 10px 14px; }
     .section-title { font-size: 0.95rem; font-weight: 700; color: #495057; border-bottom: 2px solid #e9ecef; padding-bottom: 6px; margin-bottom: 15px; margin-top: 10px; }
-    .history-box { background: #e8f4fd; border-left: 4px solid #0d6efd; border-radius: 6px; padding: 12px; font-size: 0.85rem; display: none; }
+    
+    /* ปรับแต่งกล่องประวัติให้เป็นระเบียบ */
+    .history-box { background: #e8f4fd; border-left: 4px solid #0d6efd; border-radius: 6px; padding: 14px; font-size: 0.85rem; display: none; }
+    .history-item-label { font-size: 0.75rem; color: #6c757d; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 1px; }
+    .history-item-value { font-size: 0.9rem; font-weight: 600; color: #212529; min-height: 22px; }
   </style>
+
 </head>
 <body>
   <div class="container py-4" style="max-width: 650px;">
@@ -35,26 +40,60 @@
         </div>
 
         <!-- กล่องแสดงข้อมูลประวัติภายในเดือน (พร้อมปุ่มเลื่อน) -->
+                <!-- กล่องแสดงข้อมูลประวัติภายในเดือน (จัดระเบียบใหม่) -->
         <div id="historyContainer" class="mb-4 history-box">
-          <div class="d-flex justify-content-between align-items-center mb-2">
-            <div class="fw-bold text-primary">
-              <i class="fa-solid fa-clock-rotate-left me-1"></i> ประวัติภายในเดือนนี้: <span id="his-time">-</span>
+          <div class="row align-items-center mb-3">
+            <div class="col-7">
+              <div class="fw-bold text-primary mb-0" style="font-size: 0.9rem;">
+                <i class="fa-solid fa-clock-rotate-left me-1"></i> ประวัติภายในเดือนนี้:
+              </div>
+              <div id="his-time" class="fw-bold text-dark" style="font-size: 0.95rem;">-</div>
             </div>
-            <div>
-              <button class="btn btn-sm btn-outline-primary py-0 px-2" onclick="navigateHistory(1)">« ก่อนหน้า</button>
-              <span id="his-index" class="mx-1 fw-bold text-dark">1 / 1</span>
-              <button class="btn btn-sm btn-outline-primary py-0 px-2" onclick="navigateHistory(-1)">ถัดไป »</button>
+            <div class="col-5 text-end">
+              <div class="d-flex justify-content-end align-items-center gap-1">
+                <button class="btn btn-sm btn-outline-primary py-0 px-2" style="font-size: 0.8rem;" onclick="navigateHistory(1)">«</button>
+                <span id="his-index" class="fw-bold text-dark px-1" style="font-size: 0.85rem; white-space: nowrap;">1 / 1</span>
+                <button class="btn btn-sm btn-outline-primary py-0 px-2" style="font-size: 0.8rem;" onclick="navigateHistory(-1)">»</button>
+              </div>
             </div>
           </div>
-          <div class="row g-1 text-secondary">
-            <div class="col-4">Type: <span id="his-type" class="text-dark fw-bold">-</span></div>
-            <div class="col-4">Von PTT: <span id="his-von_ptt" class="text-dark fw-bold">-</span></div>
-            <div class="col-4">Voff PTT: <span id="his-voff_ptt" class="text-dark fw-bold">-</span></div>
-            <div class="col-6">Foreign Pipe: <span id="his-foreign" class="text-dark fw-bold">-</span></div>
-            <div class="col-3">Von F: <span id="his-von_f" class="text-dark fw-bold">-</span></div>
-            <div class="col-3">Voff F: <span id="his-voff_f" class="text-dark fw-bold">-</span></div>
-            <div class="col-6">I (Adc): <span id="his-adc" class="text-dark fw-bold">-</span></div>
-            <div class="col-6">I (Aac): <span id="his-aac" class="text-dark fw-bold">-</span></div>
+
+          <!-- ตารางแสดงข้อมูลค่าการวัดแบบเป็นระเบียบ -->
+          <div class="row g-2 pt-2 border-top border-primary-subtle">
+            <div class="col-4">
+              <div class="history-item-label">Type</div>
+              <div id="his-type" class="history-item-value">-</div>
+            </div>
+            <div class="col-4">
+              <div class="history-item-label">Von PTT</div>
+              <div id="his-von_ptt" class="history-item-value">-</div>
+            </div>
+            <div class="col-4">
+              <div class="history-item-label">Voff PTT</div>
+              <div id="his-voff_ptt" class="history-item-value">-</div>
+            </div>
+
+            <div class="col-6 mt-2">
+              <div class="history-item-label">Foreign Pipe</div>
+              <div id="his-foreign" class="history-item-value">-</div>
+            </div>
+            <div class="col-3 mt-2">
+              <div class="history-item-label">Von F</div>
+              <div id="his-von_f" class="history-item-value">-</div>
+            </div>
+            <div class="col-3 mt-2">
+              <div class="history-item-label">Voff F</div>
+              <div id="his-voff_f" class="history-item-value">-</div>
+            </div>
+
+            <div class="col-6 mt-2">
+              <div class="history-item-label">I (Adc)</div>
+              <div id="his-adc" class="history-item-value">-</div>
+            </div>
+            <div class="col-6 mt-2">
+              <div class="history-item-label">I (Aac)</div>
+              <div id="his-aac" class="history-item-value">-</div>
+            </div>
           </div>
         </div>
 
