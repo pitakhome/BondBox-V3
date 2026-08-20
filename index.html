@@ -19,7 +19,6 @@
     .history-item-label { font-size: 0.75rem; color: #6c757d; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 1px; }
     .history-item-value { font-size: 0.9rem; font-weight: 600; color: #212529; min-height: 22px; }
   </style>
-
 </head>
 <body>
   <div class="container py-4" style="max-width: 650px;">
@@ -39,10 +38,7 @@
           </button>
         </div>
 
-        <!-- กล่องแสดงข้อมูลประวัติภายในเดือน (พร้อมปุ่มเลื่อน) -->
-                <!-- กล่องแสดงข้อมูลประวัติภายในเดือน (จัดระเบียบใหม่) -->
-                <!-- กล่องแสดงข้อมูลประวัติภายในเดือน (ปรับแก้ปุ่มไม่ให้ตกบรรทัด) -->
-                <!-- กล่องแสดงข้อมูลประวัติเดือนก่อนหน้า -->
+        <!-- กล่องแสดงข้อมูลประวัติเดือนก่อนหน้า -->
         <div id="historyContainer" class="mb-4 history-box">
           <div class="row align-items-center mb-2">
             <div class="col-6">
@@ -59,7 +55,7 @@
               </div>
             </div>
           </div>
-          <!-- (ตารางด้านล่างคงเดิมตามโค้ดเดิมของคุณได้เลยครับ) -->
+          
           <!-- ตารางแสดงข้อมูลค่าการวัด -->
           <div class="row g-2 pt-2 border-top border-primary-subtle">
             <div class="col-4">
@@ -217,7 +213,7 @@
 
   <script>
     let html5QrcodeScanner;
-    const WEB_APP_URL = "https://script.google.com/macros/s/AKfycby1wg5-L31n8b1pMzCYYdJS31ITCbORv6Y67LuADDPnl8UZ-19LqyFEU5aQ4X5lQiTmuQ/exec"; // อย่าลืมเปลี่ยนเป็น URL ของคุณ
+    const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbyhpsStyhzF1JPmqnVEemcCg6yybLW59oyBYdECS0brcrjpTM3Gc6J72ISOQh052l9_-w/exec"; // URL ของคุณ
 
     let historyData = [];
     let currentIndex = 0;
@@ -248,23 +244,36 @@
         console.error("Failed to clear scanner. ", error);
       });
 
-      // ดึงข้อมูลประวัติภายในเดือนด้วย JSONP
-      fetchPreviousDataJSONP(nickName);
+      // เรียกใช้งานฟังก์ชันดึงประวัติเดือนก่อนหน้าโดยส่ง routeCode และ bondboxKp
+      fetchPreviousDataJSONP(routeCode, bondboxKp);
     }
 
-    function fetchPreviousDataJSONP(nickName) {
-      if(!nickName) return;
+    function fetchPreviousDataJSONP(routeCode, bondboxKp) {
+      if (!routeCode || !bondboxKp) return;
+      
+      // คำนวณหาเดือนก่อนหน้าอัตโนมัติ
+      let d = new Date();
+      let currentMonth = d.getMonth() + 1;
+      let currentYear = d.getFullYear();
+      
+      let targetMonth = currentMonth - 1;
+      let targetYear = currentYear;
+      
+      if (targetMonth === 0) {
+        targetMonth = 12;
+        targetYear -= 1;
+      }
       
       let oldScript = document.getElementById('jsonpScript');
       if (oldScript) oldScript.remove();
 
       let script = document.createElement('script');
       script.id = 'jsonpScript';
-      script.src = `${WEB_APP_URL}?nick_name=${encodeURIComponent(nickName)}&callback=showHistoryData`;
+      script.src = `${WEB_APP_URL}?route_code=${encodeURIComponent(routeCode)}&bondbox_kp=${encodeURIComponent(bondboxKp)}&month=${targetMonth}&year=${targetYear}&callback=showHistoryData`;
       document.body.appendChild(script);
     }
 
-    // รับข้อมูลที่เป็น Array ของเดือนนี้มาแสดงผล
+    // รับข้อมูลที่เป็น Array ของเดือนก่อนหน้ามาแสดงผล
     function showHistoryData(data) {
       historyData = data || [];
       currentIndex = 0;
